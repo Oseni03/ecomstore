@@ -1,0 +1,49 @@
+{% load static %}
+
+
+{% if wishlist %}
+  <table class="table">
+      <thead>
+          <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Price</th>
+              <th scope="col">Stock</th>
+              <th scope="col">Add Item</th>
+              <th scope="col">Remove</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for item in wishlist %}
+          <tr>
+            <td>
+              <div class="media">
+                <div class="d-flex">
+                  <img src="{% static "img/cart.jpg" %}" alt="">
+                </div>
+                <div class="media-body">
+                  <p>{{ item.product.name }}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <h5>${{ item.product.sale_price }}</h5>
+            </td>
+            <td>
+              <div class="product_count">
+                  {{ item.in_stock }}
+              </div>
+            </td>
+            <td>
+                <input type="hidden" name="invt_id" id="invt_id" value="{{item.id}}" />
+                <a hx-post="{% url "cart:add" %}" hx-target="#cart-element" class="btn btn-primary">Add to cart</a>
+            </td>
+            <td>
+              <a class="btn btn-danger" href="{% url "account:wishlist_add" item.id %}">Remove</a>
+            </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+{% else %}
+  <h1>No product in your wishlist</h1>
+{% endif %}

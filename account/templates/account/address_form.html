@@ -1,0 +1,21 @@
+{% load static %}
+
+<form class="form-group">
+  {% csrf_token %}
+  
+  {% for field in form %}
+    {% if field.errors %}
+      {% for error in field.errors %}
+      <div class="alert alert-primary" roles="alert">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+    
+    {{ field }}
+    <br>
+  {% endfor %}
+  {% if pk %}
+  <a hx-post="{% url "account:address_update" pk %}" hx-target="#sidebar_cont" hx-trigger="click"  class="btn btn-primary">Update</a>
+  {% else %}
+  <a hx-post="{% url "account:address_add" %}" hx-target="#sidebar_cont" hx-trigger="click"  class="btn btn-primary">Add</a>
+  {% endif %}
+</form>

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}{% endblock %}
+
+
+{% block content %}
+<body>
+
+	<!-- Start Header Area -->
+  {% include "partials/header.html" %}
+	<!-- End Header Area -->
+	<section class="section_gap">
+    <div id="page-content">        
+        <!-- Lookbook Start -->
+        <div class="container">
+        	<div class="row">
+            	<div class="col-12 col-sm-12 col-md-12 col-lg-12">	
+        			<div class="empty-page-content text-center">
+                        <h1>Invalid User</h1>
+                        <p>The page you requested does not exist.</p>
+                        <p><a href="{% url 'account:register' %}" class="btn btn--has-icon-after">Signup <i class="fa fa-caret-right" aria-hidden="true"></i></a></p>
+                      </div>
+        		</div>
+        	</div>
+        </div>
+        <!-- Lookbook Start -->
+    </div>
+    <!--End Body Content-->
+	</section>
+	<!-- start footer Area -->
+  {% include "partials/footer.html" %}	
+  <!-- End footer Area -->
+
+	{% include "partials/script.html" %}
+
+</body>
+{% endblock %}

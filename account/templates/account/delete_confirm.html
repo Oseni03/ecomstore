@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% load django_htmx %}
+
+{% block title %}
+  Delete profile confirmation 
+{% endblock %}
+
+{% block content %}
+    <!--Body Content-->
+    <div id="page-content">        
+        <!-- Lookbook Start -->
+        <div class="container">
+        	<div class="row">
+            	<div class="col-12 col-sm-12 col-md-12 col-lg-12">	
+        			<div class="empty-page-content text-center">
+                        <h1>Account deleted</h1>
+                        <p>Thank you.</p>
+                        <p><a href="/" class="btn btn--has-icon-after">Go to home <i class="fa fa-caret-right" aria-hidden="true"></i></a></p>
+                      </div>
+        		</div>
+        	</div>
+        </div>
+        <!-- Lookbook Start -->
+    </div>
+    <!--End Body Content-->
+{% endblock %}

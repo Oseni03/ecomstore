@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  Products
+{% endblock %}
+
+{% block content %}
+	<!-- Product -->
+	<div class="bg0 m-t-23 p-b-140">
+		<div class="container">
+		  {% include "store/partials/filter.html" %}
+
+			<div id="products_list">
+			  {% include "store/partials/product_list.html" %}
+			</div>
+
+		</div>
+	</div>
+		
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+  2-factor authentication
+{% endblock %}
+
+{% block style %}
+  <!-- Custom styles for this template -->
+  <link href="{% static "signin.css" %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+	<!-- breadcrumb -->
+	<div class="container">
+		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+			<a href="{% url "store:home" %}" class="stext-109 cl8 hov-cl1 trans-04">
+				Home
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+			<a href="{% url "account:login" %}" class="stext-109 cl8 hov-cl1 trans-04">
+				Sign In
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+			<span class="stext-109 cl4">
+				2-factor authentication
+			</span>
+		</div>
+	</div>
+
+	<!--================Login Box Area =================-->
+	<section class="text-center">
+		<div class="form-signin w-100 m-auto">
+      <form method="post">
+        {% csrf_token %}
+        <h1 class="h3 mb-3 fw-normal">Enter OTP</h1>
+        
+        {% for field in form %}
+        <div class="form-floating">
+          {% if field.errors %}
+  			  {% for error in field.errors %}
+  			  <div class="alert alert-primary" roles="alert">
+  			    {{ error }}
+  			  </div>
+  			  {% endfor %}
+  			  {% endif %}
+  			  
+          {% render_field field class="mb-2 form-control" placeholder=field.label %}
+        </div>
+        {% endfor %}
+        
+        <button class="w-100 btn btn-lg btn-primary" type="submit">
+          Verify
+        </button>
+      </form>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+{% endblock %}
