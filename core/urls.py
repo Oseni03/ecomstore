@@ -3,12 +3,17 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+import debug_toolbar
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("store.urls", namespace="store")),
     path('review/', include("review.urls", namespace="review")),
     path('account/', include("account.urls", namespace="account")),
+    path('cart/', include("cart.urls", namespace="cart")),
+    path('order/', include("order.urls", namespace="order")),
+    path("__debug__", include(debug_toolbar.urls)),
 ]
 
 if settings.DEBUG:

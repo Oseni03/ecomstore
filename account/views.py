@@ -178,7 +178,7 @@ def address_update(request, pk):
       messages.success(request, "Address added successfully.")
       
       addresses = Address.objects.filter(customer=request.user)
-      return render(request, "account/addresses.html", {"addresses": addresses})
+      return render(request, "account/partials/address_list.html", {"addresses": addresses})
   return render(request, "account/address_form.html", {"form": form, "pk": pk})
 
 
@@ -187,7 +187,7 @@ def address_delete(request, pk):
   get_object_or_404(Address, id=pk).delete()
   
   addresses = Address.objects.filter(customer=request.user)
-  return render(request, "account/addresses.html", {"addresses": addresses})
+  return render(request, "account/partials/address_list.html", {"addresses": addresses})
 
 
 @login_required
@@ -196,16 +196,22 @@ def address_set_default(request, pk):
   Address.objects.filter(customer=request.user, id=pk).update(default=True)
   
   addresses = Address.objects.filter(customer=request.user)
-  return render(request, "account/addresses.html", {"addresses": addresses})
+  return render(request, "account/partials/address_list.html", {"addresses": addresses})
 
 
-def wish_list_add(request, pk):
-  product = get_object_or_404(Product, id=pk)
+def wishlist_add(request, slug):
+  print(request.POST)
+  action = request.POST.get("action")
+  product = get_object_or_404(Product, slug=slug)
   if product.wish_list.filter(id=request.user.id).exists():
     product.wish_list.remove(request.user)
   else:
     product.wish_list.add(request.user)
-  return redirect(request.META["HTTP_REFERER"])
+  
+  if action:
+    return render(request, "partials/header.html")
+  else:
+    return redirect(request.META["HTTP_REFERER"])
 
 
 def wishlist(request):

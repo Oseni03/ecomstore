@@ -11,8 +11,6 @@ from urllib.parse import urlencode
 import phonenumbers
 import pycountry
 
-from .choices import COUNTRIES
-
 # Create your models here.
 class CustomAccountManager(BaseUserManager):
   def create_superuser(self, email, name, password, **other_fields):
@@ -43,7 +41,7 @@ class Customer(AbstractBaseUser, PermissionsMixin):
   email = models.EmailField(_("email address"), unique=True)
   name = models.CharField(max_length=150, blank=True)
   mobile = models.CharField(max_length=12, blank=True, unique=True)
-  country = models.CharField(verbose_name=_("Country"), max_length=100, null=True, blank=True, choices=COUNTRIES)
+  country = CountryField(verbose_name=_("Country"), null=True, blank=True, blank_label='Select country')
   is_active = models.BooleanField(default=False)
   is_staff = models.BooleanField(default=False)
   created = models.DateTimeField(auto_now_add=True)
@@ -97,7 +95,7 @@ class Address(models.Model):
   address_line_1 = models.CharField(_("Address Line 1"), max_length=150)
   address_line_2 = models.CharField(_("Address Line 2"), max_length=150, blank=True)
   town_city = models.CharField(_("Town/City/State"), max_length=150)
-  country = models.CharField(verbose_name=_("Country"), max_length=100, null=True, blank=True, choices=COUNTRIES)
+  country = CountryField(verbose_name=_("Country"), null=True, blank=True)
   delivery_instructions = models.CharField(_("Delivery Instructions"), max_length=250)
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
@@ -109,18 +107,15 @@ class Address(models.Model):
     verbose_name_plural = "Addresses"
   
   def __str__(self):
-    return f"{self.customer}- {self.town_city}"
+    return f"{self.town_city}"
 
 
 class UserToken(models.Model):
   customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
   timestamp = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
-  token = models.CharField(max_length=100, null=True, blank=True)
   two_step_code = models.CharField(max_length=6, null=True, blank=True)
-  
   is_email = models.BooleanField(default=False)
-  is_password = models.BooleanField(default=False)
   is_sms = models.BooleanField(default=False)
   
   is_active = models.BooleanField(default=True)

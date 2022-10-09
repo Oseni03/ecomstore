@@ -14,8 +14,8 @@
     <br>
   {% endfor %}
   {% if pk %}
-  <a hx-post="{% url "account:address_update" pk %}" hx-target="#sidebar_cont" hx-trigger="click"  class="btn btn-primary">Update</a>
+  <a hx-post="{% url "account:address_update" pk %}" hx-target="#address_list" hx-trigger="click"  class="btn btn-primary">Update</a>
   {% else %}
-  <a hx-post="{% url "account:address_add" %}" hx-target="#sidebar_cont" hx-trigger="click"  class="btn btn-primary">Add</a>
+  <a hx-post="{% url "account:address_add" %}" hx-target="#address_list" hx-trigger="click"  class="btn btn-primary">Add</a>
   {% endif %}
 </form>

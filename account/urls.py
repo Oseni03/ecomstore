@@ -47,13 +47,13 @@ urlpatterns = [
   path("two-factor/activation/", views.two_factor, name="tf_activation"),
   
   # ADDRESS 
-  path("addresses/", views.AddressListView.as_view(), name="addresses"),
-  path("add-address/", views.address_add, name="address_add"),
-  path("update-address/<slug:pk>/", views.address_update, name="address_update"),
-  path("delete-address/<slug:pk>/", views.address_delete, name="address_delete"),
-  path("set-default/<slug:pk>/", views.address_set_default, name="address_set_default"),
+  path("address/", views.AddressListView.as_view(), name="addresses"),
+  path("address/create/", views.address_add, name="address_add"),
+  path("address/<slug:pk>/update/", views.address_update, name="address_update"),
+  path("address/<slug:pk>/delete/", views.address_delete, name="address_delete"),
+  path("address/<slug:pk>/default/", views.address_set_default, name="address_set_default"),
   
   # WISH LIST
-path("wishlist/add/<int:pk>/", views.wish_list_add, name="wishlist_add"),
+path("wishlist/<slug:slug>/add/", views.wishlist_add, name="wishlist_add"),
 path("wishlist/", views.wishlist, name="wishlist"),
 ]

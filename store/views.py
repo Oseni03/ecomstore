@@ -29,8 +29,6 @@ class HomeView(generic.ListView):
   def get_context_data(self):
     context = super().get_context_data()
     context["form"] = self.filterset.form
-    print()
-    print(self.filterset.get_filters())
     context["url"] = reverse("store:home")
     return context
 

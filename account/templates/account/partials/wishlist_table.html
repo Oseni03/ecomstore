@@ -13,7 +13,7 @@
           </tr>
       </thead>
       <tbody>
-          {% for item in wishlist %}
+          {% for product in wishlist %}
           <tr>
             <td>
               <div class="media">
@@ -21,20 +21,20 @@
                   <img src="{% static "img/cart.jpg" %}" alt="">
                 </div>
                 <div class="media-body">
-                  <p>{{ item.product.name }}</p>
+                  <p>{{ product.name }}</p>
                 </div>
               </div>
             </td>
             <td>
-              <h5>${{ item.product.sale_price }}</h5>
+              <h5>${{ product.sale_price }}</h5>
             </td>
             <td>
               <div class="product_count">
-                  {{ item.in_stock }}
+                  {{ product.in_stock }}
               </div>
             </td>
             <td>
-                <input type="hidden" name="invt_id" id="invt_id" value="{{item.id}}" />
+                <input type="hidden" name="prod_id" id="prod_id" value="{{product.id}}" />
                 <a hx-post="{% url "cart:add" %}" hx-target="#cart-element" class="btn btn-primary">Add to cart</a>
             </td>
             <td>

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+  Orders 
+{% endblock %}
+
+{% block content %}
+	<!-- breadcrumb -->
+	<div class="container">
+		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+			<a href="{% url "store:home" %}" class="stext-109 cl8 hov-cl1 trans-04">
+				Home
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+			<a href="{% url "account:dashboard" %}" class="stext-109 cl8 hov-cl1 trans-04">
+				Dashboard
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+			<span class="stext-109 cl4">
+				Orders
+			</span>
+		</div>
+	</div>
+
+<br>
+  <div class="container">
+      <h1 class="h2">Your Orders</h1>
+      <div>Manage your <b>Orders</b></div>
+      <hr />
+      <div class="container px-0">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          {% for order in orders %}
+          <div class="col">
+            <div class="card pb-3">
+              <div class="card-body small pb-1">
+                <p class="card-text m-0 fw-bold">{{ order.created_at.date }}</p>
+                <p class="card-text m-0">Address: {{order.address}}</p>
+                <p class="card-text m-0">Amount: {{order.amount}}</p>
+                <p class="card-text m-0">Status: {{order.status}}</p>
+                <p class="card-text m-0">Ref: {{order.ref_code}}</p>
+              </div>
+            </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+  </div>
+<br>
+<br>
+{% endblock %}

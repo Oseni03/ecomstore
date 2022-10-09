@@ -110,7 +110,7 @@ class Attribute(models.Model):
         verbose_name_plural = _("product attributes")
     
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class ProductType(models.Model):
@@ -143,7 +143,7 @@ class AttributeValue(models.Model):
     value = models.CharField(max_length=255, verbose_name=_("product value"), help_text=_("format: required max-255"))
     
     def __str__(self):
-        return f"{self.attribute.name} : {self.value}"
+        return f"{self.attribute} : {self.value}"
     
     
 class Media(models.Model):
@@ -202,6 +202,7 @@ class ProductAttributeValues(models.Model):
     
     def __str__(self):
         return f"{self.product} - {self.attributevalues}"
+
 
 class ProductTypeAttribute(models.Model):
   """

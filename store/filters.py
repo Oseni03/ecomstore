@@ -16,7 +16,7 @@ def types(request):
 
 
 class ProductFilter(django_filters.FilterSet):
-  sale_price = django_filters.RangeFilter()
+  # sale_price = django_filters.RangeFilter()
   # product_type = django_filters.ModelChoiceFilter(queryset=types)
   # brand = django_filters.ModelChoiceFilter(choices=brands)
   # attribute_values = django_filters.filters.ModelMultipleChoiceFilter(
@@ -37,7 +37,7 @@ class ProductFilter(django_filters.FilterSet):
     fields = {
       "name": ["icontains"], 
       "category": ["exact"], 
-      # "sale_price": ["lt", "gt"],
+      "sale_price": ["lt", "gt"],
       "attribute_values": ["exact"],
       "brand": ["exact"],
       "product_type": ["exact"],

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = 'django-insecure-0$bv*x&#qh06$vms2^%z4@+7wj43gt+nv0ik6w9n49e38ypjjz'
 
@@ -24,11 +24,13 @@ INSTALLED_APPS = [
     "account",
     "store",
     "review",
+    "cart",
+    "order",
     
     'mptt',
     "django_htmx",
     'widget_tweaks',
-    # "django_filters",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -59,7 +61,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 
                 "store.context_processors.store",
-                
+                "cart.context_processors.cart",
             ],
         },
     },
