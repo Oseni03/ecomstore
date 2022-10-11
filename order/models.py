@@ -1,8 +1,10 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from account.models import Address
 from store.models import Product
+from coupon.models import Coupon
 
 import secrets
 
@@ -27,6 +29,10 @@ class Order(models.Model):
   amount = models.DecimalField(max_digits=6, decimal_places=2)
   ref_code = models.CharField(max_length=200)
   status = models.IntegerField(choices=ORDER_STATUSES, default=SUBMITTED)
+  coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, blank=True, null=True)
+  discount = models.IntegerField(default=0, 
+    validators=[MinValueValidator(0), 
+    MaxValueValidator(100)])
   
   class Meta:
     ordering = ("-created_at",)

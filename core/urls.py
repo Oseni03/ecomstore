@@ -8,11 +8,13 @@ import debug_toolbar
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("store.urls", namespace="store")),
     path('review/', include("review.urls", namespace="review")),
     path('account/', include("account.urls", namespace="account")),
     path('cart/', include("cart.urls", namespace="cart")),
     path('order/', include("order.urls", namespace="order")),
+    path('coupon/', include("coupon.urls", namespace="coupon")),
+    path('api/', include("drf.urls", namespace="drf")),
+    path('', include("store.urls", namespace="store")),
     path("__debug__", include(debug_toolbar.urls)),
 ]
 

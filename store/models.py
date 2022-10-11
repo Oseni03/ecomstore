@@ -25,7 +25,7 @@ class Category(MPTTModel):
         verbose_name_plural = _("product categories")
     
     def __str__(self):
-        return self.name
+        return str(self.name)
     
 
 class Product(models.Model):
@@ -74,7 +74,7 @@ class Product(models.Model):
             },
         },)
     weight = models.FloatField(verbose_name=_("product weight"), blank=True)
-    wish_list = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="products", blank=True)
+    wish_list = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="wishlist", blank=True)
     is_active = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
     is_bestseller = models.BooleanField(default=False)
@@ -91,6 +91,7 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse("store:product-detail", args=[self.slug,])
     
+    @property
     def in_stock(self):
         if self.stock.units > 0:
             return "In stock"
@@ -132,7 +133,7 @@ class Brand(models.Model):
     name = models.CharField(max_length=255, unique=True, verbose_name=_("brand name"), help_text=_("format: required max-255"))
     
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class AttributeValue(models.Model):

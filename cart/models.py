@@ -1,10 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.sessions.backends.db import SessionStore
 
 from store.models import Product, AttributeValue
 from account.models import Customer
+from coupon.models import Coupon
 
 from decimal import Decimal
+
+exposed_request = None
+
 
 # Create your models here.
 class Cart(models.Model):
@@ -21,7 +26,22 @@ class Cart(models.Model):
     return self.user.name
   
   def subtotal(self):
-    return sum(item.price for item in self.items.all()) 
+    return Decimal(sum(item.price for item in self.items.all()))
+    
+  @property
+  def coupon(self):
+    coupon_id = exposed_request.session.get("coupon_id")
+    if coupon_id:
+      return Coupon.objects.get(id=coupon_id)
+    return None 
+  
+  def get_discount(self):
+    if self.coupon:
+      return (self.coupon.discount / Decimal("100")) * self.subtotal()
+    return Decimal("0")
+  
+  def get_final_price(self):
+    return self.subtotal() - self.get_discount()
   
   def update_total(self):
     self.total = sum(item.quantity for item in self.items.all())

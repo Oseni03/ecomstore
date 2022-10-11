@@ -11,6 +11,8 @@ from urllib.parse import urlencode
 import phonenumbers
 import pycountry
 
+from store.models import Product
+
 # Create your models here.
 class CustomAccountManager(BaseUserManager):
   def create_superuser(self, email, name, password, **other_fields):
@@ -84,7 +86,7 @@ class Customer(AbstractBaseUser, PermissionsMixin):
         from_= twilio_number,
         to = self.mobile
       )
-
+  
 
 class Address(models.Model):
   id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

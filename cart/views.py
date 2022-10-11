@@ -10,6 +10,7 @@ from .forms import ShippingForm
 from store.models import Product, AttributeValue
 from account.forms import UserAddressForm
 from order.models import Order, OrderItem
+from coupon.forms import CouponForm
 
 from decimal import Decimal
 
@@ -49,33 +50,27 @@ class CartListView(generic.TemplateView):
     context = super().get_context_data(**kwargs)
     context["addr_form"] = ShippingForm()
     context["new_addr"] = UserAddressForm()
+    context["coupon_form"] = CouponForm()
     return context 
   
   def post(self, request, *args, **kwargs):
-    print(request.POST.dict)
-    # try:
-    #   for key, value in request.POST.items():
-    #     try:
-    #       item = get_object_or_404(CartItem, id=int(key))
-    #       item.quantity = int(value)
-    #       item.save()
-    #     except:
-    #       pass 
-    #     else:
-    #       messages.success(request, "Cart updated successful")
-  # except:
-    if request.POST.get("address"):
-      addr_id = request.POST.get("address")
-    else:
-      form = UserAddressForm(request.POST)
-      if form.is_valid():
-        addr = form.save(commit=False)
-        addr.customer=request.user 
-        addr.save()
-      addr_id = addr.pk
-    if addr_id:
-      amount = Decimal(request.user.cart.subtotal())
-      order = Order.objects.create(user=request.user, amount=amount, address_id=addr_id)
+    form = UserAddressForm(request.POST)
+    form2 = ShippingForm(request.POST)
+    if form.has_changed() or form2.has_changed():
+      if form2.has_changed():
+        addr_id = request.POST.get("address")
+      else:
+        if form.is_valid():
+          addr = form.save(commit=False)
+          addr.customer=request.user 
+          addr.save()
+        addr_id = addr.pk
+      amount = Decimal(request.user.cart.get_final_price())
+      if request.user.cart.coupon:
+        order = Order.objects.create(user=request.user, amount=amount, address_id=addr_id, coupon=request.user.cart.coupon, discount=request.user.cart.coupon.discount)
+      else:
+        order = Order.objects.create(user=request.user, amount=amount, address_id=addr_id)
+        
       
       items = CartItem.objects.filter(cart=request.user.cart)
       for item in items:
@@ -83,5 +78,14 @@ class CartListView(generic.TemplateView):
           order=order, product=item.product,
           price=item.price, 
           quantity=item.quantity)
-      messages.success(request, "Order successful")
+      messages.success(request, "Order successful")    
+    else:
+      for key, value in request.POST.items():
+        try:
+          item = get_object_or_404(CartItem, id=int(key))
+          item.quantity = int(value)
+          item.save()
+        except:
+          pass 
+      messages.success(request, "Cart updated successful")
     return redirect(request.META["HTTP_REFERER"])

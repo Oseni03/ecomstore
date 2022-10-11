@@ -26,11 +26,14 @@ INSTALLED_APPS = [
     "review",
     "cart",
     "order",
+    "coupon",
+    "drf",
     
     'mptt',
     "django_htmx",
     'widget_tweaks',
     "django_filters",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -44,6 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
     'django_htmx.middleware.HtmxMiddleware',
+    "cart.request.RequestMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'

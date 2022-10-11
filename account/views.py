@@ -199,6 +199,7 @@ def address_set_default(request, pk):
   return render(request, "account/partials/address_list.html", {"addresses": addresses})
 
 
+@login_required
 def wishlist_add(request, slug):
   print(request.POST)
   action = request.POST.get("action")
@@ -214,6 +215,7 @@ def wishlist_add(request, slug):
     return redirect(request.META["HTTP_REFERER"])
 
 
+@login_required
 def wishlist(request):
   products = Product.objects.prefetch_related("wish_list").filter(wish_list=request.user)
   return render(request, "account/wishlist.html", {"wishlist": products})

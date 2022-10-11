@@ -34,8 +34,9 @@
           <p class="card-text m-0 fw-bold">{{address.full_name}}</p>
           <p class="card-text m-0">{{address.address_line_1}}</p>
           <p class="card-text m-0">{{address.address_line_2}}</p>
-          <p class="card-text m-0">{{address.town_city}}</p>
-          <p class="card-text m-0">{{address.post_code}}</p>
+          <p class="card-text m-0">Town/City: {{address.town_city}}</p>
+          <p class="card-text m-0">Post Code: {{address.post_code}}</p>
+          <p class="card-text m-0">Country: {{address.get_country_display}}</p>
           <p class="card-text m-0">Phone number: {{address.phone}}</p>
           <div class="pt-5">
             <a hx-get="{% url "account:address_update" address.id %}" hx-target="#address_list" class="text-decoration-none">Edit</a>
