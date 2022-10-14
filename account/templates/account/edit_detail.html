@@ -32,7 +32,8 @@
 	<!--================Login Box Area =================-->
 	<section class="text-center">
 		<div class="form-signin w-100 m-auto">
-      <form>
+      <form method="post">
+        {% csrf_token %}
         <h1 class="h3 mb-3 fw-normal">Update profile</h1>
         
         {% for field in form %}

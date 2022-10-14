@@ -1,5 +1,7 @@
 from django import forms 
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, PasswordChangeForm
+from django_countries.widgets import CountrySelectWidget
+from django_countries.fields import CountryField
 
 from .models import Customer, Address, UserToken
 
@@ -12,20 +14,19 @@ class UserLoginForm(AuthenticationForm):
 
 
 class RegistrationForm(forms.ModelForm):
-  name = forms.CharField(label="Enter name", min_length=4, max_length=50, help_text="Required")
+  username = forms.CharField(label="Enter name", min_length=4, max_length=50, help_text="Required")
+  first_name = forms.CharField(label="First Name")
+  last_name = forms.CharField(label="Last Name")
   email = forms.EmailField(
     max_length=100, help_text="Required", 
     error_messages = {"required": "Sorry, you will need an email"})
   password = forms.CharField(label="Password", widget=forms.PasswordInput)
   password2 = forms.CharField(label="Repeat Password", widget=forms.PasswordInput)
-  country = forms.CharField(label="Country", widget=forms.PasswordInput)
-  
-  # reCAPTCHA token
-  token = forms.CharField(widget=forms.HiddenInput())
+  country = CountryField().formfield()
   
   class Meta:
     model = Customer 
-    fields = ("name", "email", "country")
+    fields = ("username", "first_name", "last_name", "email", "mobile", "country")
   
   def clean_password2(self):
     cd = self.cleaned_data
@@ -42,9 +43,21 @@ class RegistrationForm(forms.ModelForm):
   
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
-    self.fields["name"].widget.attrs.update({
+    self.fields["username"].widget.attrs.update({
       "class": "form-control",
-      "placeholder": "Name",
+      "placeholder": "Username",
+    })
+    self.fields["first_name"].widget.attrs.update({
+      "class": "form-control",
+      "placeholder": "First Name",
+    })
+    self.fields["last_name"].widget.attrs.update({
+      "class": "form-control",
+      "placeholder": "First Name",
+    })
+    self.fields["mobile"].widget.attrs.update({
+      "class": "form-control",
+      "placeholder": "Mobile",
     })
     self.fields["email"].widget.attrs.update({
       "class": "form-control",

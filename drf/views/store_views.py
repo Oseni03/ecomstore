@@ -1,14 +1,24 @@
 from django.utils.text import slugify
 
 from rest_framework import generics, mixins
+from rest_framework import permissions
+from rest_framework import authentication 
 
 from store.models import Product, Category
 from store.serializers import ProductSerializer, CategorySerializer
+from store.permissions import IsStaffEditorPermission
+
+from drf.authentication import TokenAuthentication
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
   queryset = Product.objects.all()
-  serializer_class = ProductSerializer
+  serializer_class = ProductSerializer 
+  authentication_classes = [
+    authentication.SessionAuthentication,
+    TokenAuthentication,
+  ]
+  permission_classes = [IsStaffEditorPermission]
 
  
 class ProductDetailAPIView(generics.RetrieveAPIView):
@@ -27,6 +37,7 @@ class ProductDeleteAPIView(generics.DestroyAPIView):
   queryset = Product.objects.all()
   serializer_class = ProductSerializer 
   lookup_field = "slug"
+  permission_class = []
   
   def perform_destroy(self, instance):
     # Instance 
@@ -39,7 +50,6 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
   
   def perform_create(self, serializer):
     # serializer.save(parent=parent)
-    print(serializer.validated_data)
     name = serializer.validated_data.get("name")
     slug = serializer.validated_data.get("slug")
     if slug is None:
@@ -73,6 +83,7 @@ class CategoryDeleteAPIView(generics.DestroyAPIView):
     super().perform_destroy(instance)
 
 
+# All CRUD functionality
 class ProductMixinView(
   mixins.DestroyModelMixin,
   mixins.CreateModelMixin,

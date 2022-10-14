@@ -23,7 +23,7 @@ class Cart(models.Model):
     verbose_name_plural = _("carts")
   
   def __str__(self):
-    return self.user.name
+    return self.user.username
   
   def subtotal(self):
     return Decimal(sum(item.price for item in self.items.all()))

@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     "django_filters",
     "rest_framework",
+    "rest_framework.authtoken",
+    # "django_unicorn",
 ]
 
 MIDDLEWARE = [
@@ -127,3 +129,11 @@ LOGIN_URL = "account:login"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_USERNAME = "Admin@cozastore.com"
+
+REST_FRAMEWORK = {
+  "DEFAULT_AUTHENTICATION_CLASSES": [
+    "rest_framework.authentication.SessionAuthentication",
+    "drf.authentication.TokenAuthentication"
+  ],
+  "DEFAULT_PERMISSION_CLASSES": []
+}

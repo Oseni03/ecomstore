@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import F
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_GET
 from django.views import generic
@@ -26,15 +27,10 @@ def cart_add(request):
   quantity = request.POST.get("quantity")
   prod_id = request.POST.get("product")
   
-  try:
-    item = CartItem.objects.get(cart=request.user.cart, product_id=prod_id)
-    if item:
-      item.quantity += int(quantity)
-      item.save()
-  except:
-    item = CartItem.objects.create(
-      cart=request.user.cart, 
-      product_id=prod_id, quantity=quantity)
+  item, created = CartItem.objects.get_or_create(cart=request.user.cart, product_id=prod_id)
+  if not created:
+    item.quantity = F("quantity") + 1
+    item.save()
   attributes = AttributeValue.objects.filter(attribute_values__product__pk=prod_id, value__in=attribute_values)
   
   for attr in attributes:

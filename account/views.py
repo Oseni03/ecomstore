@@ -33,7 +33,7 @@ class MyLoginView(LoginView):
     if form.is_valid():
       username = form.cleaned_data["username"]
       password = form.cleaned_data["password"]
-      user = authenticate(email=username, password=password)
+      user = authenticate(username=username, password=password)
       if user.is_active:
         if user.two_step_active:
           current_site = get_current_site(self.request)
@@ -80,20 +80,13 @@ class RegistrationFormView(generic.FormView):
   form_class = RegistrationForm 
   success_url = "/"
   
-  def get(self, *args, **kwargs):
-    if self.request.user.is_authenticated:
-      return redirect("/")
-    if self.request.htmx:
-      return render(self.request, "account/partials/register-element.html", {"form": self.form_class})
-    return super().get(*args, **kwargs)
-  
   def form_valid(self, form):
     user = form.save(commit=False)
-    print(form.cleaned_data)
-    user.set_password = form.cleaned_data["password"]
+    user.set_password(form.cleaned_data["password"])
     user.email = form.cleaned_data["email"]
-    user.is_active = False
+    user.is_active = False 
     user.save()
+    
     current_site = get_current_site(self.request)
     subject = "Activate your Account"
     message = render_to_string("account/email/account_activation.html", {
